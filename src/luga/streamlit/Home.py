@@ -2,6 +2,7 @@ import streamlit as st
 from pathlib import Path
 import base64
 import pandas
+import altair as alt
 
 from luga.engine import process
 
@@ -101,17 +102,36 @@ def add_compare_section():
     if submitted and df_are_valid:
         result_dataframe = process(dataframe_totali, dataframe_robot)
         st.write("Differenza delle giacenze (esposto):")
-        col0, col1 = st.columns([1, 4])
+        col0, col1, col2 = st.columns([1, 2, 2])
         with col0:
             # count the number of None values in the DataFrame
             count_none = result_dataframe.isnull().sum().sum()
+            count_zero = len(result_dataframe[result_dataframe == 0].dropna())
             filtered_result = result_dataframe[result_dataframe > 0].dropna()
             st.dataframe(filtered_result, use_container_width=True)
 
+        count_esposti = int(result_dataframe['Giacenze'].sum())
         with col1:
-            st.markdown(f'Prodotti: {len(result_dataframe)}')
-            st.markdown(f"Totale prodotti che hanno un match (prodotti esposti): {int(result_dataframe['Giacenze'].sum())}")
-            st.markdown(f"Prodotti che non sono nel file delle giacenze robot: {count_none}")
+            st.markdown(f"""
+            - Prodotti: {len(result_dataframe)}
+            - Prodotti con match in robot (non esposti): {count_zero}
+            - Totale prodotti con match (esposti): {count_esposti}
+            - Prodotti senza match: {count_none}
+        """)
+        
+        with col2:
+            # Create a Pandas DataFrame with the information provided
+            data = pandas.DataFrame({
+                'Prodotti': ['Prodotti non esposti', 'Prodotti esposti', 'Prodotti senza match'],
+                'Count': [count_zero, count_esposti, count_none]
+            })
+
+            # Create an Altair chart
+            chart = alt.Chart(data).mark_arc().encode(
+                theta=alt.Theta(field="Count", type="quantitative", stack=True),
+                color=alt.Color(field="Prodotti", type="nominal"),
+            )
+            st.altair_chart(chart, use_container_width=True)
 
         csv_result_bytes = result_dataframe.to_csv(sep=";")
         st.download_button(
@@ -120,9 +140,6 @@ def add_compare_section():
             file_name="result_differences.csv",
             mime="text/csv",
         )
-    
-
-
 
 def main():
     set_page_config()
