@@ -133,7 +133,7 @@ def add_compare_section():
             )
             st.altair_chart(chart, use_container_width=True)
 
-        csv_result_bytes = result_dataframe.to_csv(sep=";")
+        csv_result_bytes = result_dataframe.fillna('non_trovato').to_csv(sep=";")
         st.download_button(
             "Download this file as CSV",
             data=csv_result_bytes,
