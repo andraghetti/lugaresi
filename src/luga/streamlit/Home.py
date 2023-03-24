@@ -60,12 +60,9 @@ def check_file(return_file, key: str):
         return
 
 def add_giacenze_view(df: pandas.DataFrame):
-    col0, col1 = st.columns(2)
-    col0.dataframe(df)
-
-    with col1:
-        st.write(f"Prodotti: {len(df)}")
-        st.write(f"Totale prodotti: {df['Giacenze'].sum()}")
+    st.write(f"Prodotti: {len(df)}")
+    st.write(f"Totale prodotti: {df['Giacenze'].sum()}")
+    st.dataframe(df)
 
 def add_compare_section():
     st.header("Calcolo differenza giacenze")
