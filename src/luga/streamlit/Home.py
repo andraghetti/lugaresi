@@ -62,7 +62,7 @@ def check_file(return_file, key: str):
 def add_giacenze_view(df: pandas.DataFrame):
     st.write(f"Prodotti: {len(df)}")
     st.write(f"Totale prodotti: {df['Giacenze'].sum()}")
-    st.dataframe(df)
+    st.dataframe(df, use_container_width=True)
 
 def add_compare_section():
     st.header("Calcolo differenza giacenze")
@@ -106,7 +106,7 @@ def add_compare_section():
             # count the number of None values in the DataFrame
             count_none = result_dataframe.isnull().sum().sum()
             filtered_result = result_dataframe[result_dataframe > 0].dropna()
-            st.dataframe(filtered_result)
+            st.dataframe(filtered_result, use_container_width=True)
 
         with col1:
             st.markdown(f'Prodotti: {len(result_dataframe)}')
