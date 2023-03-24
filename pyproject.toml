@@ -1,0 +1,117 @@
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+name = "luga"
+version = "0.0.0"
+description = "Tools for Farmacia Lugaresi"
+readme = ["README.md"]
+authors = ["Lorenzo Andraghetti <andraghetti.l@gmail.com>"]
+maintainers = ["Lorenzo Andraghetti <andraghetti.l@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/andraghetti/lugaresi"
+homepage = "https://github.com/andraghetti/lugaresi"
+
+
+# Pypi classifiers: https://pypi.org/classifiers/
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+]
+
+[tool.poetry.scripts]
+# Entry points for the package https://python-poetry.org/docs/pyproject/#scripts
+luga = "luga.cli:luga"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pandas = "^1.5.3"
+streamlit = "^1.0.0"
+rich-click = "^1.6.1"
+openpyxl = "^3.0.0"
+
+[tool.poetry.dev-dependencies]
+black = {version = "^23"}
+isort = {extras = ["colors"], version = "^5.10.1"}
+mypy = "^1.0.0"
+pre-commit = "^2.0"
+
+[tool.black]
+# https://github.com/psf/black
+target-version = ["py39"]
+line-length = 90
+color = true
+
+exclude = '''
+/(
+    \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | env
+    | venv
+)/
+'''
+
+[tool.mypy]
+# https://mypy.readthedocs.io/en/latest/config_file.html#using-a-pyproject-toml-file
+strict = false
+files = ["src/**/*.py"]
+ignore_missing_imports = true
+pretty = true
+show_column_numbers = true
+
+[tool.ruff]
+# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
+select = ["E", "F"]
+ignore = []
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["A", "B", "C", "D", "E", "F"]
+unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+# Less restrictive then black
+line-length = 120
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Assume Python 3.9.
+target-version = "py39"

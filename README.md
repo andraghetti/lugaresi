@@ -1,2 +1,1 @@
-# lugaresi
-Tools for Farmacia Lugaresi
+# Lugaresi
